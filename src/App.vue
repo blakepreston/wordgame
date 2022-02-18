@@ -9,6 +9,9 @@ export default {
   name: 'App',
   components: {
     HelloWorld
+  },
+  beforeCreate(){
+        document.querySelector('body').setAttribute('style', 'background:#0d0221')
   }
 }
 </script>

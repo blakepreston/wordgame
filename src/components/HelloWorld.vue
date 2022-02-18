@@ -21,12 +21,13 @@
             <h4>{{item.value}}</h4>
           </div>
         </div>
-        <div class="enterButton" @click="checkWord()"><h2>Enter</h2></div>
+        <div class="deleteButton" @click="deleteLetter()"><h2>Delete</h2></div>
       </div>
+      
     </div>
-
-</div>
-  
+    
+        <div class="enterButton" @click="checkWord()"><h2>Enter</h2></div>
+  </div>
 </template>
 
 <script>
@@ -34,32 +35,32 @@ export default {
   data(){
     return{
       list: [
-        {letter: 'Q', value: 1},
-        {letter: 'W', value: 2},
+        //{letter: 'Q', value: 1},
+        //{letter: 'W', value: 2},
         {letter: 'E', value: 12},
         {letter: 'R', value: 6},
         {letter: 'T', value: 6},
         {letter: 'Y', value: 2},
         {letter: 'U', value: 4},
         {letter: 'I', value: 9},
-        {letter: 'O', value: 8},
+        //{letter: 'O', value: 8},
         {letter: 'P', value: 2},
         {letter: 'A', value: 9},
         {letter: 'S', value: 4},
-        {letter: 'D', value: 4},
+        //{letter: 'D', value: 4},
         {letter: 'F', value: 2},
-        {letter: 'G', value: 3},
+        //{letter: 'G', value: 3},
         {letter: 'H', value: 2},
-        {letter: 'J', value: 1},
-        {letter: 'K', value: 1},
+        //{letter: 'J', value: 1},
+        //{letter: 'K', value: 1},
         {letter: 'L', value: 4},
-        {letter: 'Z', value: 1},
-        {letter: 'X', value: 1},
-        {letter: 'C', value: 2},
-        {letter: 'V', value: 2},
+        //{letter: 'Z', value: 1},
+        //{letter: 'X', value: 1},
+        //{letter: 'C', value: 2},
+        //{letter: 'V', value: 2},
         {letter: 'B', value: 2},
-        {letter: 'N', value: 6},
-        {letter: 'M', value: 2}
+        //{letter: 'N', value: 6},
+        //{letter: 'M', value: 2}
       ],
       points: 0,
       wordArray: [],
@@ -67,7 +68,8 @@ export default {
       word: '',
       guessWord: "FIESTY",
       guessPoints: 33,
-      numGuesses: 5
+      numGuesses: 5,
+      letterValues: []
     }
   },
   methods:{
@@ -85,8 +87,10 @@ export default {
 
       if(this.word.length < 6){
         this.points = 0;
+        this.letterValues = []
         for(let i = 0; i < this.wordArray.length; i++){
           this.points += this.wordArray[i].value;
+          this.letterValues.push(this.wordArray[i].value);
         }
       }
     },
@@ -96,13 +100,26 @@ export default {
         this.endGame();
       }else{
         alert("Your guess is incorrect!")
+        this.wordArray = [];
         this.numGuesses--;
         this.endGame();
+      }
+    },
+    deleteLetter(){
+      this.word = this.word.substring(0, this.word.length - 1);
+      this.points -= this.letterValues[this.word.length];
+      this.letterValues.pop();
+
+      if(this.letterValues.length == 0){
+        this.points = 0;
+        this.wordArray = [];
       }
     },
     endGame(){
       this.word = "";
       this.points = 0;
+      this.letterValues = [];
+      this.wordArray = [];
     }
   }
 }
@@ -142,7 +159,19 @@ h4{
 }
 
 .enterButton{
-  width: 20vw;
+  width: 60%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #261447;
+  height: 10vh;
+  border-radius: 15px;
+  margin: 5px;
+}
+
+.deleteButton{
+  width: 20%;
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -162,12 +191,12 @@ h4{
   height: 10vh;
   margin: 5px;
   flex: 1;
-  flex-basis: 15%;
+  flex-basis: 20%;
   border-radius: 15px;
 }
 
 .letterContainer{
-  width: 90%;
+  width: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
